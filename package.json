@@ -1,0 +1,12 @@
+{
+	"name":        "bloem",
+	"version":     "0.1.0",
+	"author":      "Sebastian Wiedenroth <wiedi@frubar.net>",
+	"description": "Bloom Filter using the FNV hash function",
+	"url":         "https://github.com/wiedi/node-bloem",
+	"main":        "bloem.js",
+	"dependencies": {
+		"fnv": "0.1.x",
+		"bitbuffer": "0.1.x"
+	}
+}
