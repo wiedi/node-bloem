@@ -36,6 +36,7 @@ function calulateHashes(key, size, slices) {
 function Bloem(size, slices) {
 	this.size   = size
 	this.slices = slices
+	this.count  = 0
 	this.bitfield = new BitBuffer(size)
 }
 
@@ -45,6 +46,7 @@ Bloem.prototype = {
 		for(var i = 0; i < hashes.length; i++) {
 			this.bitfield.set(hashes[i], true)
 		}
+		this.count++
 	},
 	has: function(key) {
 		var hashes = calulateHashes(key, this.size, this.slices)
