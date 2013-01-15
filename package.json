@@ -8,5 +8,11 @@
 	"dependencies": {
 		"fnv": "0.1.x",
 		"bitbuffer": "0.1.x"
+	},
+	"devDependencies": {
+		"mocha": "1.8.x"
+	},
+	"scripts": {
+		"test": "mocha -u qunit -R list"
 	}
 }

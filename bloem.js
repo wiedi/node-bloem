@@ -36,7 +36,6 @@ function calulateHashes(key, size, slices) {
 function Bloem(size, slices) {
 	this.size   = size
 	this.slices = slices
-	this.count  = 0
 	this.bitfield = new BitBuffer(size)
 }
 
@@ -46,7 +45,6 @@ Bloem.prototype = {
 		for(var i = 0; i < hashes.length; i++) {
 			this.bitfield.set(hashes[i], true)
 		}
-		this.count++
 	},
 	has: function(key) {
 		var hashes = calulateHashes(key, this.size, this.slices)
@@ -57,6 +55,30 @@ Bloem.prototype = {
 	}
 }
 
+function SafeBloem(capacity, error_rate) {
+	var size   = calculateSize(capacity, error_rate)
+	var slices = calculateSlices(size, capacity)
+	this.capacity   = capacity
+	this.error_rate = error_rate
+	this.count  = 0
+	this.filter = new Bloem(size, slices)
+}
+
+SafeBloem.prototype = {
+	add: function(key) {
+		if(this.count >= this.capacity) {
+			return false
+		}
+		this.filter.add(key)
+		this.count++
+		return true
+	},
+	has: function(key) {
+		return this.filter.has(key)
+	}
+}
+
 exports.Bloem = Bloem
+exports.SafeBloem = SafeBloem
 exports.calculateSize   = calculateSize
 exports.calculateSlices = calculateSlices
