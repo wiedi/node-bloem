@@ -78,7 +78,38 @@ SafeBloem.prototype = {
 	}
 }
 
+function ScalingBloem(error_rate, options) {
+	var options = options || {}
+	this.error_rate       = error_rate
+	this.ratio            = options.ratio || 0.9
+	this.scaling          = options.scaling || 2
+	this.initial_capacity = options.initial_capacity|| 1000
+	this.filters = [new SafeBloem(this.initial_capacity, error_rate * (1 - this.ratio))]
+}
+
+ScalingBloem.prototype = {
+	add: function(key) {
+		var f = this.filters.slice(-1)[0]
+		if(f.add(key)) {
+			return
+		}
+		f = new SafeBloem(f.capacity * this.scaling, f.error_rate * this.ratio)
+		f.add(key)
+		this.filters.push(f)
+	},
+	has: function(key) {
+		for(var i = this.filters.length; i-- > 0; ) {
+			if(this.filters[i].has(key)) {
+				return true
+			}
+		}
+		return false
+	}
+}
+
+
 exports.Bloem = Bloem
 exports.SafeBloem = SafeBloem
+exports.ScalingBloem = ScalingBloem
 exports.calculateSize   = calculateSize
 exports.calculateSlices = calculateSlices

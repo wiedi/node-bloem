@@ -40,3 +40,29 @@ test('#add-and-stop', function(){
 		assert.equal(f.has(b), false)
 	}
 })
+
+suite('ScalingBloem')
+
+
+test('#empty', function(){
+	var f = new bloem.ScalingBloem(0.01)
+	assert.equal(f.has(Buffer("foo")), false)
+})
+
+test('#add-and-grow', function(){
+	var f = new bloem.ScalingBloem(0.001, {initial_capacity: 20})
+	for(var i = 0; i < 100; i++) {
+		var b = Buffer(i.toString())
+		assert.equal(f.has(b), false)
+		f.add(b)
+		assert.equal(f.has(b), true)
+	}
+	for(var i = 0; i < 100; i++) {
+		assert.equal(f.has(b), true)
+	}
+	for(var i = 100; i < 200; i++) {
+		var b = Buffer(i.toString())
+		assert.equal(f.has(b), false)
+	}
+	assert.equal(f.filters.length, 3)
+})
