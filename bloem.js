@@ -1,4 +1,4 @@
-"use strict";
+"use strict"
 
 var BitBuffer = require('bitbuffer').BitBuffer
 var VNF = require('fnv').FNV
@@ -83,7 +83,7 @@ function ScalingBloem(error_rate, options) {
 	this.error_rate       = error_rate
 	this.ratio            = options.ratio || 0.9
 	this.scaling          = options.scaling || 2
-	this.initial_capacity = options.initial_capacity|| 1000
+	this.initial_capacity = options.initial_capacity || 1000
 	this.filters = [new SafeBloem(this.initial_capacity, error_rate * (1 - this.ratio))]
 }
 
@@ -106,7 +106,6 @@ ScalingBloem.prototype = {
 		return false
 	}
 }
-
 
 exports.Bloem = Bloem
 exports.SafeBloem = SafeBloem
