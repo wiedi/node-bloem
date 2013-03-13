@@ -1,7 +1,7 @@
 "use strict"
 
 var BitBuffer = require('bitbuffer').BitBuffer
-var VNF = require('fnv').FNV
+var FNV = require('fnv').FNV
 
 function calculateSize(capacity, error_rate) {
 	var log2sq = 0.480453  /* Math.pow(Math.log(2), 2) */
@@ -19,7 +19,7 @@ function calulateHashes(key, size, slices) {
 	 * http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.72.2442
 	 */
 	function fnv(seed, data) {
-		var h = new VNF()
+		var h = new FNV()
 		h.update(seed)
 		h.update(data)
 		return h.value()
