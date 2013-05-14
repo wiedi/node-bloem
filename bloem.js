@@ -22,7 +22,7 @@ function calulateHashes(key, size, slices) {
 		var h = new FNV()
 		h.update(seed)
 		h.update(data)
-		return h.value()
+		return h.value() >>> 0
 	}
 	var h1 = fnv(Buffer("S"), key)
 	var h2 = fnv(Buffer("W"), key)
@@ -62,6 +62,14 @@ function SafeBloem(capacity, error_rate) {
 	this.error_rate = error_rate
 	this.count  = 0
 	this.filter = new Bloem(size, slices)
+}
+
+SafeBloem.destringify = function(data) {
+	var bloem = new SafeBloem(data.capacity, data.error_rate)
+	bloem.count  = data.count
+	bloem.filter.bitfield.buffer = new Buffer(data.filter.bitfield.buffer)
+
+	return bloem
 }
 
 SafeBloem.prototype = {
