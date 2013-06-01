@@ -55,6 +55,13 @@ Bloem.prototype = {
 	}
 }
 
+Bloem.destringify = function(data) {
+	var filter = new Bloem(data.size, data.slices)
+	filter.bitfield.buffer = new Buffer(data.bitfield.buffer)
+	return filter
+}
+
+
 function SafeBloem(capacity, error_rate) {
 	var size   = calculateSize(capacity, error_rate)
 	var slices = calculateSlices(size, capacity)
@@ -62,14 +69,6 @@ function SafeBloem(capacity, error_rate) {
 	this.error_rate = error_rate
 	this.count  = 0
 	this.filter = new Bloem(size, slices)
-}
-
-SafeBloem.destringify = function(data) {
-	var bloem = new SafeBloem(data.capacity, data.error_rate)
-	bloem.count  = data.count
-	bloem.filter.bitfield.buffer = new Buffer(data.filter.bitfield.buffer)
-
-	return bloem
 }
 
 SafeBloem.prototype = {
@@ -84,6 +83,13 @@ SafeBloem.prototype = {
 	has: function(key) {
 		return this.filter.has(key)
 	}
+}
+
+SafeBloem.destringify = function(data) {
+	var filter = new SafeBloem(data.capacity, data.error_rate)
+	filter.count = data.count
+	filter.filter.bitfield.buffer = new Buffer(data.filter.bitfield.buffer)
+	return filter
 }
 
 function ScalingBloem(error_rate, options) {
@@ -113,6 +119,19 @@ ScalingBloem.prototype = {
 		}
 		return false
 	}
+}
+
+ScalingBloem.destringify = function(data) {
+	var filter = new ScalingBloem(data.error_rate, {
+		'ratio':            data.ratio,
+		'scaling':          data.scaling,
+		'initial_capacity': data.initial_capacity
+	})
+	filter.filters = []
+	for(var i = 0; i < data.filters.length; i++) {
+		filter.filters.push(SafeBloem.destringify(data.filters[i]))
+	}
+	return filter
 }
 
 exports.Bloem = Bloem
