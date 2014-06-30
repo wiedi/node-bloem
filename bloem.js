@@ -62,13 +62,13 @@ Bloem.destringify = function(data) {
 }
 
 
-function SafeBloem(capacity, error_rate) {
+function SafeBloem(capacity, error_rate, buffer) {
 	var size   = calculateSize(capacity, error_rate)
 	var slices = calculateSlices(size, capacity)
 	this.capacity   = capacity
 	this.error_rate = error_rate
 	this.count  = 0
-	this.filter = new Bloem(size, slices)
+	this.filter = new Bloem(size, slices, buffer)
 }
 
 SafeBloem.prototype = {
