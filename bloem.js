@@ -33,10 +33,10 @@ function calulateHashes(key, size, slices) {
 	return hashes
 }
 
-function Bloem(size, slices) {
+function Bloem(size, slices, buffer) {
 	this.size   = size
 	this.slices = slices
-	this.bitfield = new BitBuffer(size)
+	this.bitfield = new BitBuffer(size, buffer)
 }
 
 Bloem.prototype = {
