@@ -15,7 +15,7 @@
 	],
 	"dependencies": {
 		"fnv": "0.1.x",
-		"bitbuffer": "0.1.x"
+		"bitbuffer": "qzaidi/bitbuffer"
 	},
 	"devDependencies": {
 		"mocha": "1.8.x"
