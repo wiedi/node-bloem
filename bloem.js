@@ -33,10 +33,13 @@ function calulateHashes(key, size, slices) {
 	return hashes
 }
 
-function Bloem(size, slices) {
+/*
+ * Allow serializing a bloom from a buffer
+ */
+function Bloem(size, slices,buffer) {
 	this.size   = size
 	this.slices = slices
-	this.bitfield = new BitBuffer(size)
+	this.bitfield = new BitBuffer(size,buffer)
 }
 
 Bloem.prototype = {
@@ -62,13 +65,13 @@ Bloem.destringify = function(data) {
 }
 
 
-function SafeBloem(capacity, error_rate) {
+function SafeBloem(capacity, error_rate, buffer) {
 	var size   = calculateSize(capacity, error_rate)
 	var slices = calculateSlices(size, capacity)
 	this.capacity   = capacity
 	this.error_rate = error_rate
 	this.count  = 0
-	this.filter = new Bloem(size, slices)
+	this.filter = new Bloem(size, slices, buffer)
 }
 
 SafeBloem.prototype = {
