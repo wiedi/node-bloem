@@ -50,7 +50,7 @@ test('#add-and-stop', function() {
 })
 
 test('#destringify', function() {
-	var f = new bloem.SafeBloem(3, 0.02)
+	var f = new bloem.SafeBloem(3, 0.002)
 	assert.equal(f.add("one"), true)
 	assert.equal(f.add("two"), true)
 	f = bloem.SafeBloem.destringify(JSON.parse(JSON.stringify(f)))
