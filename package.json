@@ -1,6 +1,6 @@
 {
 	"name":        "bloem",
-	"version":     "0.2.3",
+	"version":     "0.2.4",
 	"author":      "Sebastian Wiedenroth <wiedi@frubar.net>",
 	"description": "Bloom Filter using the FNV hash function",
 	"url":         "https://github.com/wiedi/node-bloem",
