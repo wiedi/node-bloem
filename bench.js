@@ -10,7 +10,9 @@ suite
     .add('json serialization', function() {
         bloem.Bloem.destringify(JSON.parse(JSON.stringify(serializeTest)))
     }).add('binary serialization', function() {
-        bloem.Bloem.deserialize(serializeTest.serialize())
+        serializeTest.serialize(function (err, data) {
+            bloem.Bloem.deserialize({ data: data }, function () {});
+        });
     }).on('cycle', function(event) {
         console.log(String(event.target))
     }).run()
