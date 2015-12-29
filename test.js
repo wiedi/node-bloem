@@ -25,6 +25,40 @@ test('#destringify', function() {
 	assert.equal(f.has(Buffer("bar")), false)
 })
 
+test('#serialize', function(done) {
+	var start = new bloem.Bloem(8, 2)
+	start.add(Buffer("foo"))
+	start.serialize(function (err, data) {
+		if (err) return done(err)
+
+		bloem.Bloem.deserialize({ data: data }, function (err, end) {
+			if (err) return done(err)
+
+			assert(end.bitfield.toBuffer().equals(start.bitfield.toBuffer()))
+			assert.equal(end.size, start.size)
+			assert.equal(end.slices, start.slices)
+			done()
+		});
+	});
+});
+
+test('#serialize-gzip', function(done) {
+	var start = new bloem.Bloem(8, 2)
+	start.add(Buffer("foo"))
+	start.serialize({ gzip: true }, function (err, data) {
+		if (err) return done(err)
+
+		bloem.Bloem.deserialize({ data: data, gzip: true }, function (err, end) {
+			if (err) return done(err)
+
+			assert(end.bitfield.toBuffer().equals(start.bitfield.toBuffer()));
+			assert.equal(end.size, start.size);
+			assert.equal(end.slices, start.slices);
+			done()
+		});
+	});
+});
+
 
 suite('SafeBloem')
 

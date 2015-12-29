@@ -29,7 +29,7 @@ All use the FNV Hash function and the optimization described in [[1](#lesshash)]
 	filter.add(Buffer("1")) // true
 	filter.add(Buffer("2")) // true
 	filter.add(Buffer("3")) // false
-	
+
 	filter.has(Buffer("3")) // false
 	filter.has(Buffer("1")) // true
 
@@ -57,6 +57,23 @@ Add a key to the set
 
 Test if key is in the set
 
+
+##### filter.serialize([options,] callback)
+
+- <code>options</code> Object - can contain the following properties:
+	- <code>gzip</code> Boolean - if set to true, the filter will be compressed
+- <code>callback</code> Function - called with the resulting (Error, Buffer)
+
+Serializes the bloop filter into a buffer.
+
+##### Bloem.deserialize(options, callback)
+
+- <code>options</code> Object - can contain the following properties:
+	- <code>data</code> Buffer - as received from the serialize method
+	- <code>gzip</code> Boolean - if set to true, the filter will be deflated
+- <code>callback</code> Function - called with the resulting (Error, Bloem)
+
+Deserializes a previously serialized Bloem filter.
 
 ### Class: SafeBloem
 

@@ -2,6 +2,7 @@
 
 var BitBuffer = require('bitbuffer').BitBuffer
 var FNV = require('fnv').FNV
+var zlib = require('zlib')
 
 function calculateSize(capacity, error_rate) {
 	var log2sq = 0.480453  /* Math.pow(Math.log(2), 2) */
@@ -52,6 +53,21 @@ Bloem.prototype = {
 			if(!this.bitfield.get(hashes[i])) return false
 		}
 		return true
+	},
+	serialize: function(options, callback) {
+		if (typeof options === 'function') {
+			callback = options
+			options = {}
+		}
+
+		var meta = new Buffer(8)
+		meta.writeUInt32BE(this.size, 0)
+		meta.writeUInt32BE(this.slices, 4)
+
+		var result = Buffer.concat([meta, this.bitfield.buffer])
+		if (!options.gzip) return callback(undefined, result)
+
+		zlib.gzip(result, callback)
 	}
 }
 
@@ -59,6 +75,24 @@ Bloem.destringify = function(data) {
 	var filter = new Bloem(data.size, data.slices)
 	filter.bitfield.buffer = new Buffer(data.bitfield.buffer)
 	return filter
+}
+
+Bloem.deserialize = function(options, callback) {
+	function buildBloem(err, data) {
+		if (err) return callback(err)
+
+		callback(undefined, new Bloem(
+			data.readUInt32BE(0),
+			data.readUInt32BE(4),
+			data.slice(8)
+		));
+	}
+
+	if (options.gzip) {
+		zlib.gunzip(options.data, buildBloem)
+	} else {
+		buildBloem(undefined, options.data)
+	}
 }
 
 
