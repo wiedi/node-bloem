@@ -18,7 +18,8 @@
 		"bitbuffer": "0.1.x"
 	},
 	"devDependencies": {
-		"mocha": "1.8.x"
+		"mocha": "1.8.x",
+		"benchmark": "^1.0.0"
 	},
 	"scripts": {
 		"test": "mocha -u qunit -R list"

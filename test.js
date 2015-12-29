@@ -25,6 +25,16 @@ test('#destringify', function() {
 	assert.equal(f.has(Buffer("bar")), false)
 })
 
+test('#serialize', function() {
+	var start = new bloem.Bloem(8, 2)
+	start.add(Buffer("foo"))
+	var end = bloem.Bloem.deserialize(start.serialize())
+
+	assert(end.bitfield.toBuffer().equals(start.bitfield.toBuffer()));
+	assert.equal(end.size, start.size);
+	assert.equal(end.slices, start.slices);
+});
+
 
 suite('SafeBloem')
 

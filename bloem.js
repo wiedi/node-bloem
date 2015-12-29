@@ -52,6 +52,13 @@ Bloem.prototype = {
 			if(!this.bitfield.get(hashes[i])) return false
 		}
 		return true
+	},
+	serialize: function() {
+		var meta = new Buffer(8)
+		meta.writeUInt32BE(this.size, 0)
+		meta.writeUInt32BE(this.slices, 4)
+
+		return Buffer.concat([meta, this.bitfield.buffer])
 	}
 }
 
@@ -59,6 +66,14 @@ Bloem.destringify = function(data) {
 	var filter = new Bloem(data.size, data.slices)
 	filter.bitfield.buffer = new Buffer(data.bitfield.buffer)
 	return filter
+}
+
+Bloem.deserialize = function(buffer) {
+	return new Bloem(
+		buffer.readUInt32BE(0),
+		buffer.readUInt32BE(4),
+		buffer.slice(8)
+	)
 }
 
 
